@@ -1,11 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import TeamStats from './pages/TeamStats';
+import NavBar from './components/NavBar';
+import Home from './pages/Home';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
+    <Router>
+      <div className="App">
+        <NavBar />
+        
+        <Routes>
+          {/* Home Route */}
+          <Route path="/" element={ <Home />} />
+
+          {/* Other Routes */}
+          <Route path="/stats" element={<TeamStats />} />
+          
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
+
+
+
+/**
+ * 
+ * <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
@@ -19,8 +44,4 @@ function App() {
           Learn React
         </a>
       </header>
-    </div>
-  );
-}
-
-export default App;
+ */
