@@ -4,6 +4,7 @@ import './App.css';
 import TeamStats from './pages/TeamStats';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
+import Selection from './pages/Selection';
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
 
           {/* Other Routes */}
           <Route path="/stats" element={<TeamStats />} />
+
+          <Route path="/selection" element={<Selection />} />
           
         </Routes>
       </div>

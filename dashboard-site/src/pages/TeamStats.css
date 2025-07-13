@@ -1,0 +1,39 @@
+
+.team-stats-dashboard {
+  background: #4ec3a5;
+  min-height: 100vh;
+  padding: 32px;
+  color: #fff;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+}
+.top-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+.empty-card {
+  background: #195c6e;
+  border-radius: 16px;
+  min-height: 80px;
+  flex: 1;
+  box-shadow: 0 2px 8px #0003;
+}
+.main-row {
+  display: flex;
+  gap: 24px;
+}
+.main-graph {
+  flex: 2;
+  background: #2a9db0;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px #0003;
+}
+.team-info-card {
+  flex: 1;
+  background: #2a9db0;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #0003;
+  min-width: 260px;
+  max-width: 340px;
+}
