@@ -16,6 +16,12 @@
   height: 40px;
   margin-right: 12px;
 }
+
+.logo-link{
+  text-decoration: none;
+  color: white;
+}
+
 .site-title {
   font-size: 1.5rem;
   font-weight: bold;

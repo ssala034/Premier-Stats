@@ -66,6 +66,7 @@ body, .home-bg {
   transition: background 0.2s, color 0.2s;
   letter-spacing: 0.1em;
   text-align: left;
+  text-decoration: none;
 }
 
 .get-started:hover {
