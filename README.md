@@ -38,3 +38,11 @@ put team logo somewhere
 Update the team page so looks better
 
 Get more team data and make stats section dynamic based on selected team
+
+
+July 18
+
+fix titles of each card
+and the boxes and overall messages on the boxes
+
+fix team searhc bar alignedment with images

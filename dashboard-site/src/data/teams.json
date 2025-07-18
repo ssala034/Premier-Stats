@@ -9,18 +9,6 @@
             "title": "Aston-Villa"
         },
         {
-            "cover": "/teams/Bournemouth.png", 
-            "title": "Bournemouth"
-        },
-        {
-            "cover": "/teams/Brentford.png", 
-            "title": "Brentford"
-        },
-        {
-            "cover": "/teams/Brighton.png", 
-            "title": "Brighton"
-        },
-        {
             "cover": "/teams/Chelsea.png", 
             "title": "Chelsea"
         },
@@ -31,14 +19,6 @@
         {
             "cover": "/teams/Everton.png", 
             "title": "Everton"
-        },
-        {
-            "cover": "/teams/Fulham.png", 
-            "title": "Fulham"
-        },
-        {
-            "cover": "/teams/LeedsUnited.png", 
-            "title": "Leeds-United"
         },
         {
             "cover": "/teams/LeicesterCity.png", 
@@ -61,24 +41,12 @@
             "title": "Newcastle"
         },
         {
-            "cover": "/teams/NottinghamForest.png", 
-            "title": "Nottingham-Forest"
-        },
-        {
             "cover": "/teams/Southampton.png", 
             "title": "Southampton"
         },
         {
             "cover": "/teams/Tottenham.png", 
             "title": "Tottenham"
-        },
-        {
-            "cover": "/teams/WestHam.png", 
-            "title": "West-Ham"
-        },
-        {
-            "cover": "/teams/Wolves.png", 
-            "title": "Wolves"
         }
     ]
 }

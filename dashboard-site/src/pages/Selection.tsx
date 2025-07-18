@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./Selection.css";
 import teamsData from "../data/teams.json";
+import { motion } from "framer-motion";
+import { Link } from 'react-router-dom';
+
 
 const Selection = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -24,15 +27,28 @@ const Selection = () => {
           onChange={e => setSearchQuery(e.target.value)}
         />
       </div>
+
       <div className="images-container">
         {filteredTeams.map((team, idx) => (
-          <div key={idx} className="image-box">
+          <motion.div
+            key={idx}
+            className="image-box"
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              delay: idx * 0.5,
+              duration: 0.6,
+              ease: "easeOut",
+            }}
+          >
             <img src={team.cover} alt={team.title} className="teams-image" />
             <div className="content">
               <p className="title">{team.title.replace(/-/g, " ")}</p>
-              <button className="btn">View</button>
+              <Link className="btn" to={`/stats?team=${encodeURIComponent(team.title)}`}>
+                  View
+              </Link>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
