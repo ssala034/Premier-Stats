@@ -1,10 +1,12 @@
 import React, { useMemo } from "react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
+import "./TeamRadarChart.css";
 import lfc2020 from "../data/Liverpool/Liverpool 2020-2021.json";
 import lfc2021 from "../data/Liverpool/Liverpool 2021-2022.json";
 import lfc2022 from "../data/Liverpool/Liverpool 2022-2023.json";
 import lfc2023 from "../data/Liverpool/Liverpool 2023-2024.json";
 import lfc2024 from "../data/Liverpool/Liverpool 2024-2025.json";
+import CountUp from "./Countup";
 
 type Player = {
   Player: string;
@@ -84,28 +86,48 @@ const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ team, year }) => {
   ];
 
   return (
-    <div style={{ width: "100%", height: 340, display: "flex", flexDirection: "column", justifyContent: "center" }}>
-      <ResponsiveContainer width="100%" height={260}>
-        <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey="stat" tick={{ fill: "#fff", fontWeight: 600 }} />
-          <PolarRadiusAxis angle={30} domain={[0, 1]} tick={false} axisLine={false} />
-          <Radar name={team} dataKey="value" stroke="#ff6b6b" fill="#ff6b6b" fillOpacity={0.5}
-            dot={true}
-            isAnimationActive={true}
-            animationDuration={1200}
-            animationEasing="ease-out"
-            />
-        </RadarChart>
-      </ResponsiveContainer>
-      <div style={{ marginTop: 12, textAlign: "center", color: "#fff", fontWeight: 600, fontSize: 18 }}>
-        Passing: <span style={{ fontWeight: 600 }}>{passing}</span> &nbsp;|&nbsp;
-        Scoring: <span style={{ fontWeight: 600 }}>{scoring}</span> &nbsp;|&nbsp;
-        Defense: <span style={{ fontWeight: 600 }}>{defense}</span> &nbsp;|&nbsp;
-        Depth: <span style={{ fontWeight: 600 }}>{depth.toFixed(0)}</span> &nbsp;|&nbsp;
-        Cards: <span style={{ fontWeight: 600 }}>{cards}</span>
+    <div className="radar-chart-container">
+    <ResponsiveContainer width="100%" height={260}>
+      <RadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+        <PolarGrid />
+        <PolarAngleAxis dataKey="stat" tick={{ fill: "#fff", fontWeight: 600 }} />
+        <PolarRadiusAxis angle={30} domain={[0, 1]} tick={false} axisLine={false} />
+        <Radar
+          name={team}
+          dataKey="value"
+          stroke="#ff6b6b"
+          fill="#ff6b6b"
+          fillOpacity={0.5}
+          dot={true}
+          isAnimationActive={true}
+          animationDuration={1200}
+          animationEasing="ease-out"
+        />
+      </RadarChart>
+    </ResponsiveContainer>
+    <div className="radar-chart-stats">
+      <div className="stat-row">
+        <span className="label">Passing:</span>
+        <span className="value">{passing} / {Math.round(maxStats.passing)}</span>
+      </div>
+      <div className="stat-row">
+        <span className="label">Scoring:</span>
+        <span className="value"><CountUp value ={scoring}/> / <CountUp value = {Math.round(maxStats.scoring)}/></span>
+      </div>
+      <div className="stat-row">
+        <span className="label">Defense:</span>
+        <span className="value"><CountUp value = {defense}/> / <CountUp value={maxStats.defense}/></span>
+      </div>
+      <div className="stat-row">
+        <span className="label">Depth:</span>
+        <span className="value"><CountUp value={Number(depth.toFixed(0))} duration={1500}/> / <CountUp value={Math.round(maxStats.depth)} duration={1500}/> </span>
+      </div>
+      <div className="stat-row">
+        <span className="label">Cards:</span>
+        <span className="value"><CountUp value = {cards}/> / <CountUp value = {Math.round(maxStats.cards)}/></span>
       </div>
     </div>
+  </div>
   );
 };
 

@@ -101,7 +101,7 @@ const PlayerComparisonChart = () => {
     <Card className="pt-0" style={{ minHeight: 400 }}>
       <CardHeader>
         <CardTitle style={{ fontSize: "2rem", fontWeight: 700, textAlign: "center" }}>
-          Liverpool Player Total Goals by Season
+          Player Total Goals by Season
         </CardTitle>
         <CardDescription style={{ textAlign: "center" }}>
           Select two players to compare their total goals from 2020 to 2025
