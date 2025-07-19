@@ -22,7 +22,7 @@ const Selection = () => {
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search for teams"
+          placeholder="Search for teams stats"
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />

@@ -1,11 +1,6 @@
 import React, { useMemo } from "react";
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from "recharts";
 import "./TeamRadarChart.css";
-import lfc2020 from "../data/Liverpool/Liverpool 2020-2021.json";
-import lfc2021 from "../data/Liverpool/Liverpool 2021-2022.json";
-import lfc2022 from "../data/Liverpool/Liverpool 2022-2023.json";
-import lfc2023 from "../data/Liverpool/Liverpool 2023-2024.json";
-import lfc2024 from "../data/Liverpool/Liverpool 2024-2025.json";
 import CountUp from "./Countup";
 
 type Player = {
@@ -20,40 +15,48 @@ type Player = {
   [key: string]: any;
 };
 
-const seasonDataMap: Record<number, any[]> = {
-  2020: lfc2020 as any[],
-  2021: lfc2021 as any[],
-  2022: lfc2022 as any[],
-  2023: lfc2023 as any[],
-  2024: lfc2024 as any[],
-  2025: lfc2024 as any[], // fallback for 2025
-};
-
-function map2020(data: any[]): Player[] {
-  return data.map((row) => ({
-    Player: row.field1,
-    Gls: row.field9,
-    Ast: row.field10,
-    MP: row.field5,
-    Pos: row.field3,
-    Min: row.field6,
-    CrdY: row.field11,
-    CrdR: row.field12,
-    ...row,
-  }));
-}
-
-function getSeasonPlayers(year: number): Player[] {
-  if (year === 2020) return map2020(seasonDataMap[2020]);
-  return (seasonDataMap[year] as Player[]) || [];
-}
-
 interface TeamRadarChartProps {
   team: string;
   year: number;
+  teamName: string;
 }
 
-const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ team, year }) => {
+const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ teamName, team, year }) => {
+  const stats2020 = require(`../data/${teamName}/${teamName} 2020-2021.json`);
+  const stats2021 = require(`../data/${teamName}/${teamName} 2021-2022.json`);
+  const stats2022 = require(`../data/${teamName}/${teamName} 2022-2023.json`);
+  const stats2023 = require(`../data/${teamName}/${teamName} 2023-2024.json`);
+  const stats2024 = require(`../data/${teamName}/${teamName} 2024-2025.json`);
+
+  const seasonDataMap: Record<number, any[]> = {
+    2020: stats2020 as any[],
+    2021: stats2021 as any[],
+    2022: stats2022 as any[],
+    2023: stats2023 as any[],
+    2024: stats2024 as any[],
+    2025: stats2024 as any[], // fallback for 2025
+    
+  };
+
+  function map2020(data: any[]): Player[] {
+    return data.map((row) => ({
+      Player: row.field1,
+      Gls: row.field9,
+      Ast: row.field10,
+      MP: row.field5,
+      Pos: row.field3,
+      Min: row.field6,
+      CrdY: row.field11,
+      CrdR: row.field12,
+      ...row,
+    }));
+  }
+
+  function getSeasonPlayers(year: number): Player[] {
+    if (year === 2020) return map2020(seasonDataMap[2020]);
+    return (seasonDataMap[year] as Player[]) || [];
+  }
+
   const players = useMemo(() => getSeasonPlayers(year), [year]);
 
   // passing: total assists

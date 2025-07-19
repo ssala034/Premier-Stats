@@ -18,8 +18,8 @@ const customStyles = {
     ...provided,
     minHeight: 44,
     fontSize: 18,
-    borderColor: state.isFocused ? '#007bff' : '#ccc',
-    boxShadow: state.isFocused ? '0 0 0 2px #007bff33' : provided.boxShadow,
+    borderColor: state.isFocused ? '#ccc' : '#ccc', 
+    boxShadow: 'none', 
     backgroundColor: '#fff',
   }),
   option: (provided: any, state: any) => ({

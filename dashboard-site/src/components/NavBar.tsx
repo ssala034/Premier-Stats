@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./NavBar.css";
-import uefaLogo from "../data/LogoReal.svg.png"; 
+import uefaLogo from "../data/images/LogoReal.svg.png"; 
 
 const NavBar = () => (
   <nav className="navbar">

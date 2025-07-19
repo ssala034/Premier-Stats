@@ -5,6 +5,7 @@ import TeamStats from './pages/TeamStats';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Selection from './pages/Selection';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
           <Route path="/stats" element={<TeamStats />} />
 
           <Route path="/selection" element={<Selection />} />
-          
+
+          {/* Fallback route for 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </Router>
@@ -28,23 +31,3 @@ function App() {
 }
 
 export default App;
-
-
-
-/**
- * 
- * <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
- */

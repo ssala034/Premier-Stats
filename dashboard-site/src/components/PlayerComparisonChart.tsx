@@ -1,15 +1,8 @@
-
 import * as React from "react";
 import { useState, useMemo } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import PlayerDropdown from './PlayerDropdown';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "./card";
-
-import lfc2020 from "../data/Liverpool/Liverpool 2020-2021.json";
-import lfc2021 from "../data/Liverpool/Liverpool 2021-2022.json";
-import lfc2022 from "../data/Liverpool/Liverpool 2022-2023.json";
-import lfc2023 from "../data/Liverpool/Liverpool 2023-2024.json";
-import lfc2024 from "../data/Liverpool/Liverpool 2024-2025.json";
 
 
 type Player = {
@@ -21,38 +14,50 @@ type Player = {
 
 type SeasonData = Player[];
 
-// Map 2020-2021 data to standard Player/Gls fields
-function map2020(data: any[]): Player[] {
-  return data.map((row) => ({
-    Player: row.field1,
-    Gls: row.field9,
-    ...row,
-  }));
-}
-
-const SEASONS: { label: string; value: string; data: SeasonData }[] = [
-  { label: "2020-2021", value: "2020-2021", data: map2020(lfc2020 as any[]) },
-  { label: "2021-2022", value: "2021-2022", data: lfc2021 as SeasonData },
-  { label: "2022-2023", value: "2022-2023", data: lfc2022 as SeasonData },
-  { label: "2023-2024", value: "2023-2024", data: lfc2023 as SeasonData },
-  { label: "2024-2025", value: "2024-2025", data: lfc2024 as SeasonData },
-];
-
-const COLOR_A = "#ff6b6b";
-const COLOR_B = "#4dabf7";
 
 
-function getPlayerList(seasonData: SeasonData): Player[] {
-  return seasonData.filter((p: Player) => p.Player && p.Gls !== undefined && !isNaN(Number(p.Gls)));
-}
+const PlayerComparisonChart = ({ teamName }: { teamName: string }) => {
+  const stats2020 = require(`../data/${teamName}/${teamName} 2020-2021.json`);
+  const stats2021 = require(`../data/${teamName}/${teamName} 2021-2022.json`);
+  const stats2022 = require(`../data/${teamName}/${teamName} 2022-2023.json`);
+  const stats2023 = require(`../data/${teamName}/${teamName} 2023-2024.json`);
+  const stats2024 = require(`../data/${teamName}/${teamName} 2024-2025.json`);
 
 
-function getPlayerGoals(player: Player | undefined): number {
-  if (!player || player.Gls === undefined) return 0;
-  return Number(player.Gls);
-}
 
-const PlayerComparisonChart = () => {
+  // Map 2020-2021 data to standard Player/Gls fields
+  function map2020(data: any[]): Player[] {
+    return data.map((row) => ({
+      Player: row.field1,
+      Gls: row.field9,
+      ...row,
+    }));
+  }
+
+  const SEASONS: { label: string; value: string; data: SeasonData }[] = [
+    { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
+    { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
+    { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
+    { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
+    { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
+  ];
+
+  const COLOR_A = "#ff0000ff";
+  const COLOR_B = "#1f3b4d";
+
+
+  function getPlayerList(seasonData: SeasonData): Player[] {
+    return seasonData.filter((p: Player) => {
+      const goals = Number(p.Gls);
+      return p.Player && goals > 0 && !isNaN(goals);
+    });
+  }
+
+
+  function getPlayerGoals(player: Player | undefined): number {
+    if (!player || player.Gls === undefined) return 0;
+    return Number(player.Gls);
+  }
 
   // Build a unique player list from all seasons, only MF or FW
   const allPlayersSet = new Set<string>();
@@ -101,10 +106,10 @@ const PlayerComparisonChart = () => {
     <Card className="pt-0" style={{ minHeight: 400 }}>
       <CardHeader>
         <CardTitle style={{ fontSize: "2rem", fontWeight: 700, textAlign: "center" }}>
-          Player Total Goals by Season
+          Players Total Goals by Season
         </CardTitle>
         <CardDescription style={{ textAlign: "center" }}>
-          Select two players to compare their total goals from 2020 to 2025
+          Compare players total goals from 2020 to 2025
         </CardDescription>
         <div style={{ display: "flex", gap: 32, justifyContent: "center", marginTop: 16, flexWrap: "wrap" }}>
           <div style={{ minWidth: 220 }}>
@@ -133,10 +138,10 @@ const PlayerComparisonChart = () => {
         <ResponsiveContainer width="100%" height="100%">
           <LineChart
             data={chartData}
-            margin={{ top: 16, right: 30, left: 20, bottom: 5 }}
+            margin={{ top: 16, right: 30, left: 20, bottom: 30 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year" />
+            <XAxis dataKey="year"   label={{ value: "Goals per Season", position: "bottom", offset: 25, fill: "#fff" }}  />
             <YAxis label={{ value: "Total Goals", angle: -90, position: "insideLeft", fill: "#fff" }} domain={[0, Math.max(5, Math.ceil(maxGoals * 1.1))]} allowDecimals={false} />
             <Tooltip formatter={(value: any) => (typeof value === "number" ? value.toFixed(0) : value)} />
             <Legend />
@@ -146,6 +151,7 @@ const PlayerComparisonChart = () => {
               stroke={COLOR_A}
               activeDot={{ r: 8 }}
               name={playerA}
+              strokeWidth={2}
               isAnimationActive={true}
               animationDuration={1200}
               animationEasing="ease-out"
@@ -155,6 +161,7 @@ const PlayerComparisonChart = () => {
               dataKey={playerB}
               stroke={COLOR_B}
               name={playerB}
+              strokeWidth={2}
               isAnimationActive={true}
               animationDuration={1200}
               animationEasing="ease-out"

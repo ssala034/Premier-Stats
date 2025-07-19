@@ -87,6 +87,27 @@
   cursor: pointer;
 }
 
+.team-selection-button {
+  position: fixed;
+  bottom: 20px;
+  left: 20px; 
+  padding: 10px 20px;
+  text-decoration: none;
+  background: none;
+  border: 2px solid #f0c20a;
+  color: #0e3f4d;
+  font-size: 1.1rem;
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  border-radius: 6px;
+  
+}
+
+.team-selection-button:hover {
+   background: #f0c20a;
+  color: #0e07d5;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .main-layout {
