@@ -16,7 +16,7 @@ type SeasonData = Player[];
 
 
 
-const PlayerComparisonChart = ({ teamName }: { teamName: string }) => {
+const PlayerComparisonChart = ({ teamName, language }: { teamName: string; language: string }) => {
   const stats2020 = require(`../data/${teamName}/${teamName} 2020-2021.json`);
   const stats2021 = require(`../data/${teamName}/${teamName} 2021-2022.json`);
   const stats2022 = require(`../data/${teamName}/${teamName} 2022-2023.json`);
@@ -34,13 +34,14 @@ const PlayerComparisonChart = ({ teamName }: { teamName: string }) => {
     }));
   }
 
-  const SEASONS: { label: string; value: string; data: SeasonData }[] = [
-    { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
-    { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
-    { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
-    { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
-    { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
-  ];
+  const SEASONS = useMemo(() => [
+  { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
+  { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
+  { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
+  { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
+  { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
+], [stats2020, stats2021, stats2022, stats2023, stats2024, map2020]);
+
 
   const COLOR_A = "#ff0000ff";
   const COLOR_B = "#1f3b4d";
@@ -95,25 +96,33 @@ const PlayerComparisonChart = ({ teamName }: { teamName: string }) => {
         [playerB]: getPlayerGoals(pB),
       };
     });
-  }, [playerA, playerB]);
+  }, [playerA, playerB, SEASONS]);
 
   // Find max goals for y-axis domain
   const maxGoals = Math.max(
     ...chartData.map(d => Math.max(Number(d[playerA] || 0), Number(d[playerB] || 0)))
   );
 
+  const chartTitle = language === 'EN' ? 'Players Total Goals by Season' : 'Buts Totals des Joueurs par Saison';
+  const chartDescription = language === 'EN' ? 'Compare players total goals from 2020 to 2025' : 'Comparer les buts totals des joueurs de 2020 à 2025';
+  const playerNameA = language === 'EN' ? 'Player A' : 'Joueur A';
+  const playerNameB = language === 'EN' ? 'Player B' : 'Joueur B';
+
+  const yTitle = language === 'EN' ? 'Total Goals' : 'Buts Totals';
+  const xTitle = language === 'EN' ? 'Goals per Season' : 'Buts par Saison';
+
   return (
     <Card className="pt-0" style={{ minHeight: 400 }}>
       <CardHeader>
         <CardTitle style={{ fontSize: "2rem", fontWeight: 700, textAlign: "center" }}>
-          Players Total Goals by Season
+          {chartTitle}
         </CardTitle>
         <CardDescription style={{ textAlign: "center" }}>
-          Compare players total goals from 2020 to 2025
+          {chartDescription}
         </CardDescription>
         <div style={{ display: "flex", gap: 32, justifyContent: "center", marginTop: 16, flexWrap: "wrap" }}>
           <div style={{ minWidth: 220 }}>
-            <span style={{ marginRight: 8, fontWeight: 600, color: COLOR_A }}>Player A:</span>
+            <span style={{ marginRight: 8, fontWeight: 600, color: COLOR_A }}>{playerNameA}:</span>
             <PlayerDropdown
               options={playerOptionsA}
               value={playerOptionsA.find(opt => opt.value === playerA)}
@@ -123,7 +132,7 @@ const PlayerComparisonChart = ({ teamName }: { teamName: string }) => {
             />
           </div>
           <div style={{ minWidth: 220 }}>
-            <span style={{ marginRight: 8, fontWeight: 600, color: COLOR_B }}>Player B:</span>
+            <span style={{ marginRight: 8, fontWeight: 600, color: COLOR_B }}>{playerNameB} B:</span>
             <PlayerDropdown
               options={playerOptionsB}
               value={playerOptionsB.find(opt => opt.value === playerB)}
@@ -141,8 +150,8 @@ const PlayerComparisonChart = ({ teamName }: { teamName: string }) => {
             margin={{ top: 16, right: 30, left: 20, bottom: 30 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year"   label={{ value: "Goals per Season", position: "bottom", offset: 25, fill: "#fff" }}  />
-            <YAxis label={{ value: "Total Goals", angle: -90, position: "insideLeft", fill: "#fff" }} domain={[0, Math.max(5, Math.ceil(maxGoals * 1.1))]} allowDecimals={false} />
+            <XAxis dataKey="year"   label={{ value: xTitle, position: "bottom", offset: 25, fill: "#fff" }}  />
+            <YAxis label={{ value: yTitle, angle: -90, position: "insideLeft", fill: "#fff" }} domain={[0, Math.max(5, Math.ceil(maxGoals * 1.1))]} allowDecimals={false} />
             <Tooltip formatter={(value: any) => (typeof value === "number" ? value.toFixed(0) : value)} />
             <Legend />
             <Line

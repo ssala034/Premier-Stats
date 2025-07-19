@@ -1,12 +1,19 @@
 import React from "react";
 import "./TeamOverview.css";
 
-const TeamOverview = ({ teamName }: {teamName: string}) => {
+const TeamOverview = ({ teamName, language }: { teamName: string; language: string }) => {
+  const standingName = language === 'EN' ? 'Standing' : 'Classement';
+  const winsName = language === 'EN' ? 'Wins' : 'Victoires';
+  const lossesName = language === 'EN' ? 'Losses' : 'Pertes';
+  const totalPLWinsName = language === 'EN' ? 'Total PL Cups' : 'Total de coupes PL';
+
   const teamHistory = require(`../data/${teamName}/history.json`);
   const { currentStanding, wins, losses, totalPLWins } = teamHistory;
   const teamLogo = require(`../data/${teamName}/${teamName}.png`);
 
   const dynamicFontSize = teamName.length >= 15 ? "1.2rem" : "1.6rem"; 
+
+  const languageSize = language === 'EN' ? '1rem' : '0.7rem';
 
   return (
     <div className="team-overview-container">
@@ -16,11 +23,11 @@ const TeamOverview = ({ teamName }: {teamName: string}) => {
       </div>
 
       <div className="team-stat-block">
-        <div className="stat-label-row">
-          <span>Standing</span>
-          <span>Wins</span>
-          <span>Losses</span>
-          <span>Total PL Cups</span>
+        <div className="stat-label-row" style={{ fontSize: languageSize }}>
+          <span>{standingName}</span>
+          <span>{winsName}</span>
+          <span>{lossesName}</span>
+          <span>{totalPLWinsName}</span>
         </div>
         <div className="stat-value-row">
           <span>{currentStanding}</span>

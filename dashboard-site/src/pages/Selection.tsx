@@ -5,7 +5,11 @@ import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
 
 
-const Selection = () => {
+interface SelectionProps {
+  language: string;
+}
+
+const Selection: React.FC<SelectionProps> = ({ language }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredTeams, setFilteredTeams] = useState(teamsData.teams);
 
@@ -16,13 +20,25 @@ const Selection = () => {
     setFilteredTeams(filtered);
   }, [searchQuery]);
 
+  const welcomeMessage = language === 'EN'
+    ? 'Teams'
+    : 'Équipes';
+  
+  const searchPlaceholder = language === 'EN'
+    ? 'Search for teams stats'
+    : 'Rechercher des statistiques d\'équipes';
+  
+  const viewButton = language === 'EN'
+    ? 'View'
+    : 'Voir';
+
   return (
     <div className="container teams-page">
-      <h1 className="page-title">Teams</h1>
+      <h1 className="page-title">{welcomeMessage}</h1>
       <div className="search-bar">
         <input
           type="text"
-          placeholder="Search for teams stats"
+          placeholder={searchPlaceholder}
           value={searchQuery}
           onChange={e => setSearchQuery(e.target.value)}
         />
@@ -45,7 +61,7 @@ const Selection = () => {
             <div className="content">
               <p className="title">{team.title.replace(/-/g, " ")}</p>
               <Link className="btn" to={`/stats?team=${encodeURIComponent(team.title)}`}>
-                  View
+                  {viewButton}
               </Link>
             </div>
           </motion.div>

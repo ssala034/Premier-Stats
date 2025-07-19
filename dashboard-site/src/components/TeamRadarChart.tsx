@@ -19,9 +19,10 @@ interface TeamRadarChartProps {
   team: string;
   year: number;
   teamName: string;
+  language: string;
 }
 
-const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ teamName, team, year }) => {
+const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ language, teamName, team, year }) => {
   const stats2020 = require(`../data/${teamName}/${teamName} 2020-2021.json`);
   const stats2021 = require(`../data/${teamName}/${teamName} 2021-2022.json`);
   const stats2022 = require(`../data/${teamName}/${teamName} 2022-2023.json`);
@@ -79,14 +80,22 @@ const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ teamName, team, year })
     cards: Math.max(30, cards * 1.2),
   };
 
+  const passingName = language === 'EN' ? 'Passing' : 'Passes';
+  const scoringName = language === 'EN' ? 'Scoring' : 'Buts';
+  const defenseName = language === 'EN' ? 'Defense' : 'Défense';
+  const depthName = language === 'EN' ? 'Depth' : 'Profondeur';
+  const cardsName = language === 'EN' ? 'Cards' : 'Cartes';
+
   // Normalize values for radar chart (0-1 scale)
   const data = [
-    { stat: "Passing", value: passing / maxStats.passing },
-    { stat: "Scoring", value: scoring / maxStats.scoring },
-    { stat: "Defense", value: defense / maxStats.defense },
-    { stat: "Depth", value: depth / maxStats.depth },
-    { stat: "Cards", value: cards / maxStats.cards },
+    { stat: passingName, value: passing / maxStats.passing },
+    { stat: scoringName, value: scoring / maxStats.scoring },
+    { stat: defenseName, value: defense / maxStats.defense },
+    { stat: depthName, value: depth / maxStats.depth },
+    { stat: cardsName, value: cards / maxStats.cards },
   ];
+
+  
 
   return (
     <div className="radar-chart-container">
@@ -110,23 +119,23 @@ const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ teamName, team, year })
     </ResponsiveContainer>
     <div className="radar-chart-stats">
       <div className="stat-row">
-        <span className="label">Passing:</span>
+        <span className="label">{passingName}:</span>
         <span className="value">{passing} / {Math.round(maxStats.passing)}</span>
       </div>
       <div className="stat-row">
-        <span className="label">Scoring:</span>
+        <span className="label">{scoringName}:</span>
         <span className="value"><CountUp value ={scoring}/> / <CountUp value = {Math.round(maxStats.scoring)}/></span>
       </div>
       <div className="stat-row">
-        <span className="label">Defense:</span>
+        <span className="label">{defenseName}:</span>
         <span className="value"><CountUp value = {defense}/> / <CountUp value={maxStats.defense}/></span>
       </div>
       <div className="stat-row">
-        <span className="label">Depth:</span>
+        <span className="label">{depthName}:</span>
         <span className="value"><CountUp value={Number(depth.toFixed(0))} duration={1500}/> / <CountUp value={Math.round(maxStats.depth)} duration={1500}/> </span>
       </div>
       <div className="stat-row">
-        <span className="label">Cards:</span>
+        <span className="label">{cardsName}:</span>
         <span className="value"><CountUp value = {cards}/> / <CountUp value = {Math.round(maxStats.cards)}/></span>
       </div>
     </div>

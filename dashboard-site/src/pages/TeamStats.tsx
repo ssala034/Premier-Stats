@@ -6,10 +6,14 @@ import { Card, CardHeader, CardContent } from "../components/card";
 import TeamOverview from "../components/TeamOverview";
 import { useLocation, Link } from "react-router-dom";
 
-const TeamStats = () => {
+interface TeamStatsProps {
+  language: string;
+}
+
+const TeamStats = ({ language }: TeamStatsProps) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const teamName = queryParams.get("team") || "Liverpool"; // Default to Liverpool if no team is selected
+  const teamName = queryParams.get("team") || "Liverpool"; 
   const years = [2020, 2021, 2022, 2023, 2024];
   const [selectedYear, setSelectedYear] = useState(2020);
   const [showButton, setShowButton] = useState(false);
@@ -18,12 +22,18 @@ const TeamStats = () => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight;
       const pageHeight = document.documentElement.scrollHeight;
-      setShowButton(scrollPosition >= pageHeight - 100); // Show button when near the bottom
+      setShowButton(scrollPosition >= pageHeight - 100); 
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const teamInfo = language === 'EN' ? `${teamName} Team Info` : `Info sur équipe ${teamName}`;
+
+  const seasonTitle = language === 'EN' ? 'Select a Season:' : 'Choisir une saison:';
+
+  const selectButton = language === 'EN' ? 'Select Another Team' : 'Choisi une autre équipe';
 
   return (
     <div className="team-stats-dashboard">
@@ -33,21 +43,21 @@ const TeamStats = () => {
           <div className="top-row">
             <Card className="empty-card">
               <CardHeader>
-                <TeamOverview teamName={teamName} />
+                <TeamOverview language={language} teamName={teamName} />
               </CardHeader>
             </Card>
           </div>
           <div className="main-graph">
-            <PlayerComparisonChart teamName={teamName} />
+            <PlayerComparisonChart language={language} teamName={teamName} />
           </div>
         </div>
 
         {/* RIGHT COLUMN */}
         <Card className="team-info-card">
           <CardHeader>
-            <h2 className="team-info-title">{teamName} Team Info</h2>
+            <h2 className="team-info-title">{teamInfo}</h2>
             <div className="year-selector">
-              <label htmlFor="year-select">Select a Season:</label>
+              <label htmlFor="year-select">{seasonTitle}</label>
               <select
                 id="year-select"
                 value={selectedYear}
@@ -62,7 +72,7 @@ const TeamStats = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <TeamRadarChart teamName={teamName} team={teamName} year={selectedYear} />
+            <TeamRadarChart language={language} teamName={teamName} team={teamName} year={selectedYear} />
           </CardContent>
         </Card>
       </div>
@@ -70,7 +80,7 @@ const TeamStats = () => {
       {/* Button to navigate to team selection */}
       {showButton && (
         <Link to="/selection" className="team-selection-button">
-          Select Another Team
+          {selectButton}
         </Link>
       )}
     </div>
