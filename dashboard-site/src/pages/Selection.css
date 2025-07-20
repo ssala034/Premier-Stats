@@ -147,6 +147,15 @@ h1.page-title {
   background: transparent;
 }
 
+.no-results{
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  color: #fff; 
+  margin: 20px 0;
+  padding-bottom: 30%;
+  font-weight: 400;
+}
+
 /* Responsive Styling */
 @media screen and (max-width: 1100px) {
   .images-container {

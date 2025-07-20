@@ -185,14 +185,3 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
 };
 
 export default PlayerComparisonChart;
-
-
-/**
- *  // const SEASONS = useMemo(() => [
-  //   { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
-  //   { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
-  //   { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
-  //   { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
-  //   { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
-  // ], [stats2020, stats2021, stats2022, stats2023, stats2024, map2020]);
- */

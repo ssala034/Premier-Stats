@@ -16,15 +16,12 @@ function App() {
         <NavBar language={language} setLanguage={setLanguage} />
         
         <Routes>
-          {/* Home Route */}
           <Route path="/" element={<Home language={language} />} />
 
-          {/* Other Routes */}
           <Route path="/stats" element={<TeamStats language={language} />} />
 
           <Route path="/selection" element={<Selection language={language} />} />
 
-          {/* Fallback route for 404 */}
           <Route path="*" element={<NotFound language={language} />} />
         </Routes>
       </div>

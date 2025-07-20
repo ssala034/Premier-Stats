@@ -7,11 +7,21 @@ interface NotFoundProps {
 }
 
 const NotFound: React.FC<NotFoundProps> = ({ language }) => {
+  const oopsMessage = language === 'EN'
+    ? 'Oops! The page you\'re looking for doesn\'t exist.'
+    : 'Oups! La page que vous recherchez n\'existe pas.';
+  const returnHomeMessage = language === 'EN'
+    ? 'Return home to checkout other stats!'
+    : 'Retournez à l\'accueil pour consulter d\'autres statistiques!';
+  const buttonMessage = language === 'EN'
+    ? 'Go Back to Home'
+    : 'Retour à l\'accueil';
+  
   return (
     <div className="not-found-container">
       <h1 className="not-found-title">404</h1>
-      <p className="not-found-message">Oops! The page you're looking for doesn't exist. <br/> Return home to checkout other stats!</p>
-      <Link to="/" className="not-found-link">Go Back to Home</Link>
+      <p className="not-found-message">{oopsMessage} <br/> {returnHomeMessage}</p>
+      <Link to="/" className="not-found-link">{buttonMessage}</Link>
     </div>
   );
 };

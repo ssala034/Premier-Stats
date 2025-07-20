@@ -37,7 +37,7 @@ const NavBar: React.FC<NavBarProps> = ({ language, setLanguage }) => {
             </Link>
           </li>
           <li>
-            <Link to="/stats" className="nav-icon-link">
+            <Link to={`/stats?team=${encodeURIComponent("Liverpool")}`} className="nav-icon-link">
               <span className="nav-icon flag" title="Stats"></span>
             </Link>
           </li>
@@ -62,17 +62,3 @@ const NavBar: React.FC<NavBarProps> = ({ language, setLanguage }) => {
 };
 
 export default NavBar;
-
-
-/**
- * li>
-        <Link to="/players" className="nav-icon-link">
-          <span className="nav-icon shirt" title="Players"></span>
-        </Link>
-      </li>
-      <li>
-        <Link to="/search" className="nav-icon-link">
-          <span className="nav-icon search" title="Search"></span>
-        </Link>
-      </li>
- */

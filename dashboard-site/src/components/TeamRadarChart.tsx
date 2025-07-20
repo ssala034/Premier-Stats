@@ -142,10 +142,3 @@ const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ language, teamName, tea
 };
 
 export default TeamRadarChart;
-
-/**
- * // const players = useMemo(() => {
-  //   if (year === 2020) return map2020(seasonDataMap[2020]);
-  //   return (seasonDataMap[year.toString()] as Player[]) || [];
-  // }, [year, seasonDataMap, map2020]);
- */

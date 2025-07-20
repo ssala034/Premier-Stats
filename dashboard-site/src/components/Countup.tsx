@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface CountUpProps {
   value: number;
-  duration?: number; // milliseconds
+  duration?: number; 
 }
 
 const CountUp: React.FC<CountUpProps> = ({ value, duration = 800 }) => {
@@ -12,7 +12,7 @@ const CountUp: React.FC<CountUpProps> = ({ value, duration = 800 }) => {
   useEffect(() => {
     let start = 0;
     const end = value;
-    const increment = end / (duration / 16); // 60fps approx every 16ms
+    const increment = end / (duration / 16); 
 
     const step = () => {
       start += increment;
