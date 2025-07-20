@@ -29,36 +29,34 @@ const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ language, teamName, tea
   const stats2023 = require(`../data/${teamName}/${teamName} 2023-2024.json`);
   const stats2024 = require(`../data/${teamName}/${teamName} 2024-2025.json`);
 
-  const seasonDataMap: Record<number, any[]> = {
+  const seasonDataMap = useMemo(() => ({
     2020: stats2020 as any[],
     2021: stats2021 as any[],
     2022: stats2022 as any[],
     2023: stats2023 as any[],
     2024: stats2024 as any[],
     2025: stats2024 as any[], // fallback for 2025
-    
-  };
+  }), [stats2020, stats2021, stats2022, stats2023, stats2024]) as Record<string, any[]>;
 
-  function map2020(data: any[]): Player[] {
-    return data.map((row) => ({
-      Player: row.field1,
-      Gls: row.field9,
-      Ast: row.field10,
-      MP: row.field5,
-      Pos: row.field3,
-      Min: row.field6,
-      CrdY: row.field11,
-      CrdR: row.field12,
-      ...row,
-    }));
-  }
+  const players = useMemo(() => {
+    function map2020(data: any[]): Player[] {
+      return data.map((row) => ({
+        Player: row.field1,
+        Gls: row.field9,
+        Ast: row.field10,
+        MP: row.field5,
+        Pos: row.field3,
+        Min: row.field6,
+        CrdY: row.field11,
+        CrdR: row.field12,
+        ...row,
+      }));
+    }
 
-  function getSeasonPlayers(year: number): Player[] {
     if (year === 2020) return map2020(seasonDataMap[2020]);
-    return (seasonDataMap[year] as Player[]) || [];
-  }
+    return (seasonDataMap[year.toString()] as Player[]) || [];
+  }, [year, seasonDataMap]);
 
-  const players = useMemo(() => getSeasonPlayers(year), [year]);
 
   // passing: total assists
   const passing = players.reduce((sum, p) => sum + (Number(p.Ast) || 0), 0);
@@ -144,3 +142,10 @@ const TeamRadarChart: React.FC<TeamRadarChartProps> = ({ language, teamName, tea
 };
 
 export default TeamRadarChart;
+
+/**
+ * // const players = useMemo(() => {
+  //   if (year === 2020) return map2020(seasonDataMap[2020]);
+  //   return (seasonDataMap[year.toString()] as Player[]) || [];
+  // }, [year, seasonDataMap, map2020]);
+ */

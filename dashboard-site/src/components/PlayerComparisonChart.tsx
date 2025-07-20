@@ -25,22 +25,24 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
 
 
 
-  // Map 2020-2021 data to standard Player/Gls fields
-  function map2020(data: any[]): Player[] {
-    return data.map((row) => ({
-      Player: row.field1,
-      Gls: row.field9,
-      ...row,
-    }));
-  }
+  const SEASONS = useMemo(() => {
+    // Define map2020 inside the useMemo to prevent dependency issues
+    function map2020(data: any[]): Player[] {
+      return data.map((row) => ({
+        Player: row.field1,
+        Gls: row.field9,
+        ...row,
+      }));
+    }
 
-  const SEASONS = useMemo(() => [
-  { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
-  { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
-  { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
-  { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
-  { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
-], [stats2020, stats2021, stats2022, stats2023, stats2024, map2020]);
+    return [
+      { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
+      { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
+      { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
+      { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
+      { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
+    ];
+  }, [stats2020, stats2021, stats2022, stats2023, stats2024]);
 
 
   const COLOR_A = "#ff0000ff";
@@ -185,99 +187,12 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
 export default PlayerComparisonChart;
 
 
-
-
-
-
-
-
-
-
-
-
-
 /**
- * OLD CODE shadcn/ui
- * 
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "./select";
- * 
- *  <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 16, flexWrap: "wrap" }}>
-          <div style={{ minWidth: 200 }}>
-            <span style={{ marginRight: 8, fontWeight: 600 }}>Player A:</span>
-            <Select value={playerA} onValueChange={setPlayerA}>
-              <SelectTrigger className="w-[180px] rounded-lg border bg-white text-black shadow-sm">
-                <SelectValue placeholder="Select Player A" />
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                {allPlayers.map(name => (
-                  <SelectItem key={name} value={name} className="rounded-lg">
-                    {name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-          <div style={{ minWidth: 200 }}>
-            <span style={{ marginRight: 8, fontWeight: 600 }}>Player B:</span>
-            <Select value={playerB} onValueChange={setPlayerB}>
-              <SelectTrigger className="w-[180px] rounded-lg border bg-white text-black shadow-sm">
-                <SelectValue placeholder="Select Player B" />
-              </SelectTrigger>
-              <SelectContent className="rounded-xl">
-                {allPlayers.map(name => (
-                  <SelectItem key={name} value={name} className="rounded-lg">
-                    {name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </div> 
- * 
- *  <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ left: 24, right: 24, top: 16, bottom: 16 }}>
-            <defs>
-              <linearGradient id="fillA" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={COLOR} stopOpacity={0.8} />
-                <stop offset="95%" stopColor={COLOR} stopOpacity={0.1} />
-              </linearGradient>
-              <linearGradient id="fillB" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#4dabf7" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#4dabf7" stopOpacity={0.1} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} stroke="#333" />
-            <XAxis dataKey="year" tickLine={false} axisLine={false} tickMargin={8} />
-            <YAxis
-              label={{ value: "Total Goals", angle: -90, position: "insideLeft", fill: "#fff" }}
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              domain={[0, Math.max(5, Math.ceil(maxGoals * 1.1))]}
-              allowDecimals={false}
-            />
-            <Tooltip formatter={(value: any) => (typeof value === "number" ? value.toFixed(0) : value)} />
-            <Area
-              dataKey={playerA}
-              type="monotone"
-              fill="url(#fillA)"
-              stroke={COLOR}
-              name={playerA}
-              isAnimationActive={false}
-            />
-            <Area
-              dataKey={playerB}
-              type="monotone"
-              fill="url(#fillB)"
-              stroke="#4dabf7"
-              name={playerB}
-              isAnimationActive={false}
-            />
-          </AreaChart>
-        </ResponsiveContainer> 
-         <div style={{ display: "flex", justifyContent: "center", gap: 32, marginTop: 16 }}>
-          <span style={{ color: COLOR, fontWeight: 600 }}>■ {playerA}</span>
-          <span style={{ color: "#4dabf7", fontWeight: 600 }}>■ {playerB}</span>
-        </div> 
- * 
+ *  // const SEASONS = useMemo(() => [
+  //   { label: "2020-2021", value: "2020-2021", data: map2020(stats2020 as any[]) },
+  //   { label: "2021-2022", value: "2021-2022", data: stats2021 as SeasonData },
+  //   { label: "2022-2023", value: "2022-2023", data: stats2022 as SeasonData },
+  //   { label: "2023-2024", value: "2023-2024", data: stats2023 as SeasonData },
+  //   { label: "2024-2025", value: "2024-2025", data: stats2024 as SeasonData },
+  // ], [stats2020, stats2021, stats2022, stats2023, stats2024, map2020]);
  */
