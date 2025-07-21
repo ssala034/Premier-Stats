@@ -22,7 +22,7 @@ const TeamStats = ({ language }: TeamStatsProps) => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight;
       const pageHeight = document.documentElement.scrollHeight;
-      setShowButton(scrollPosition >= pageHeight - 100); 
+      setShowButton(scrollPosition >= pageHeight - 150); 
     };
 
     window.addEventListener("scroll", handleScroll);

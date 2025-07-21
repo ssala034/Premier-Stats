@@ -4,6 +4,7 @@
   padding: 32px;
   color: #fff;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  padding-bottom: 15%;
 }
 
 .main-layout {
@@ -90,12 +91,12 @@
 .team-selection-button {
   position: fixed;
   bottom: 20px;
-  left: 20px; 
+  right: 20px; 
   padding: 10px 20px;
   text-decoration: none;
-  background: none;
+  background: #f0c20a;
   border: 2px solid #f0c20a;
-  color: #0e3f4d;
+  color: #0e07d5;
   font-size: 1.1rem;
   font-family: 'Montserrat', Arial, Helvetica, sans-serif;
   font-weight: 700;
@@ -104,8 +105,8 @@
 }
 
 .team-selection-button:hover {
-   background: #f0c20a;
-  color: #0e07d5;
+  background: #f0c20a;
+  color: black
 }
 
 /* Responsive */

@@ -57,11 +57,6 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
   }
 
 
-  function getPlayerGoals(player: Player | undefined): number {
-    if (!player || player.Gls === undefined) return 0;
-    return Number(player.Gls);
-  }
-
   // Build a unique player list from all seasons, only MF or FW
   const allPlayersSet = new Set<string>();
   const playerPosMap: Record<string, string> = {};
@@ -79,6 +74,16 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
   const [playerA, setPlayerA] = useState(allPlayers[0] || "");
   const [playerB, setPlayerB] = useState(allPlayers[1] || "");
 
+  // State for comparison metric
+  const [comparisonMetric, setComparisonMetric] = useState("Gls");
+  
+
+  const metricOptions = [
+    { label: language === 'EN' ? 'Goals' : 'Buts', value: 'Gls' },
+    { label: language === 'EN' ? 'Assists' : 'Passes', value: 'Ast' },
+    { label: language === 'EN' ? 'Starts' : 'Départs', value: 'Starts' },
+  ];
+
   // Prepare options for PlayerDropdown, filter out the other selected player
   const playerOptionsA = allPlayers
     .filter(name => name !== playerB)
@@ -87,31 +92,31 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
     .filter(name => name !== playerA)
     .map(name => ({ label: name, value: name }));
 
-  // Build chart data: [{ year, playerA: goals, playerB: goals }]
+  // Build chart data based on selected metric
   const chartData = useMemo(() => {
     return SEASONS.map(season => {
       const pA = getPlayerList(season.data).find(p => p.Player === playerA);
       const pB = getPlayerList(season.data).find(p => p.Player === playerB);
       return {
         year: season.label,
-        [playerA]: getPlayerGoals(pA),
-        [playerB]: getPlayerGoals(pB),
+        [playerA]: Number(pA?.[comparisonMetric] || 0),
+        [playerB]: Number(pB?.[comparisonMetric] || 0),
       };
     });
-  }, [playerA, playerB, SEASONS]);
+  }, [playerA, playerB, SEASONS, comparisonMetric]);
 
   // Find max goals for y-axis domain
   const maxGoals = Math.max(
     ...chartData.map(d => Math.max(Number(d[playerA] || 0), Number(d[playerB] || 0)))
   );
 
-  const chartTitle = language === 'EN' ? 'Players Total Goals by Season' : 'Buts Totals des Joueurs par Saison';
-  const chartDescription = language === 'EN' ? 'Compare players total goals from 2020 to 2025' : 'Comparer les buts totals des joueurs de 2020 à 2025';
+  const chartTitle = language === 'EN' ? 'Players Total Metrics by Season' : 'Mesures des Joueurs par Saison';
+  const chartDescription = language === 'EN' ? 'Compare players metrics from 2020 to 2025' : 'Comparer les mesures des joueurs de 2020 à 2025';
   const playerNameA = language === 'EN' ? 'Player A' : 'Joueur A';
   const playerNameB = language === 'EN' ? 'Player B' : 'Joueur B';
 
-  const yTitle = language === 'EN' ? 'Total Goals' : 'Buts Totals';
-  const xTitle = language === 'EN' ? 'Goals per Season' : 'Buts par Saison';
+  const yTitle = language === 'EN' ? `Total ${metricOptions.find(opt => opt.value === comparisonMetric)?.label}` : `Total ${metricOptions.find(opt => opt.value === comparisonMetric)?.label}`;
+  const xTitle = language === 'EN' ? `${metricOptions.find(opt => opt.value === comparisonMetric)?.label} per Season` : `Total ${metricOptions.find(opt => opt.value === comparisonMetric)?.label} par Saison`;
 
   return (
     <Card className="pt-0" style={{ minHeight: 400 }}>
@@ -134,7 +139,7 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
             />
           </div>
           <div style={{ minWidth: 220 }}>
-            <span style={{ marginRight: 8, fontWeight: 600, color: COLOR_B }}>{playerNameB} B:</span>
+            <span style={{ marginRight: 8, fontWeight: 600, color: COLOR_B }}>{playerNameB}:</span>
             <PlayerDropdown
               options={playerOptionsB}
               value={playerOptionsB.find(opt => opt.value === playerB)}
@@ -152,8 +157,8 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
             margin={{ top: 16, right: 30, left: 20, bottom: 30 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="year"   label={{ value: xTitle, position: "bottom", offset: 25, fill: "#fff" }}  />
-            <YAxis label={{ value: yTitle, angle: -90, position: "insideLeft", fill: "#fff" }} domain={[0, Math.max(5, Math.ceil(maxGoals * 1.1))]} allowDecimals={false} />
+            <XAxis dataKey="year" label={{ value: xTitle, position: "bottom", offset: 25, fill: "#fff" }} />
+            <YAxis label={{ value: yTitle, angle: -90, position: "insideLeft", fill: "#fff", dy: 35 }} domain={[0, Math.max(5, Math.ceil(maxGoals * 1.1))]} allowDecimals={false} />
             <Tooltip formatter={(value: any) => (typeof value === "number" ? value.toFixed(0) : value)} />
             <Legend />
             <Line
@@ -180,6 +185,19 @@ const PlayerComparisonChart = ({ teamName, language }: { teamName: string; langu
           </LineChart>
         </ResponsiveContainer>
       </CardContent>
+      <div style={{ width: 220, marginTop: 16 }}>
+        <span style={{ marginRight: 8, fontWeight: 600 }}>
+          {language === 'EN' ? 'Metric' : 'Mesures'}
+        </span>
+        <PlayerDropdown
+          options={metricOptions}
+          value={metricOptions.find(opt => opt.value === comparisonMetric)}
+          onChange={opt => {
+            if (opt) setComparisonMetric(opt.value);
+          }}
+        />
+      </div>
+
     </Card>
   );
 };
