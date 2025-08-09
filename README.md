@@ -1,7 +1,7 @@
 # Premier Stats Visualization⚽  
 > Bilingual Premier League stats visualizer with sleek, interactive charts and deep player insights.
 
-## Demo ✨  
+## Demo   
 Live on Vercel: [https://premier-stats.vercel.app](https://seg-3125-a5premier-stats-63ej565nk-seans-projects-1162c7f1.vercel.app/)
 
 <img width="662" height="415" alt="analyticsFinal" src="https://github.com/user-attachments/assets/a64c1404-c487-469f-b785-b0383c26c85d" />
