@@ -50,10 +50,10 @@ To run this project locally:
    - To run the app locally, execute:
    - ```bash
      cd dashboard-site
-     npm run dev
+     npm start
      ```
-This will start the development server and open the app in your default browser. You can view it at `http://localhost:8080`, or some other port. 
+This will start the development server and open the app in your default browser. You can view it at `http://localhost:3000`, or some other port. 
 
 
-Once the server is running, visit `http://localhost:5173` to explore the Premier Stats app and interact with the visualized data. 
+Once the server is running, visit `http://localhost:3000` to explore the Premier Stats app and interact with the visualized data. 
 
